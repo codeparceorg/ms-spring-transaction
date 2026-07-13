@@ -15,7 +15,7 @@ jobs:
         with:
           fetch-depth: 0 
 
-      - name: Build in node
+      - name: Build in maven
         uses: codeparce/ci-workflows/.github/actions/build/maven@v1
 
 
