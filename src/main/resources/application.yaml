@@ -6,7 +6,7 @@ spring:
     name: lab
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/mi_banca
+    url: jdbc:postgresql://mi_banca_dev_2026:5432/mi_banca
     username: admin
     password: admin_2026
     driver-class-name: org.postgresql.Driver
