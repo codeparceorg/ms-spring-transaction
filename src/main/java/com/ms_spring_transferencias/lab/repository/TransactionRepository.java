@@ -1,5 +1,6 @@
 package com.ms_spring_transferencias.lab.repository;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,5 +10,7 @@ import com.ms_spring_transferencias.lab.entity.Transaction;
 
 @Repository
 public interface TransactionRepository
-        extends JpaRepository<Transaction, UUID> {
+                extends JpaRepository<Transaction, UUID> {
+
+        public List<Transaction> findAllByAccountNumberOrDestinationAccount(String AccountNumber, String destinationAccount);
 }

@@ -32,7 +32,7 @@ public class Transaction {
     private UUID id;
 
     @Column(name = "account_number")
-    private String accountId;
+    private String accountNumber;
 
     @Column(name = "destination_account", length = 20)
     private String destinationAccount;

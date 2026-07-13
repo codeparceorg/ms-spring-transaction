@@ -1,0 +1,67 @@
+name: On-Premise deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  #workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 
+    - kubernetes #Runner on-premise
+    #- ubuntu-latest #Runner cloud (default)
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 
+
+      - name: Build in node
+        uses: codeparce/ci-workflows/.github/actions/build/maven@v1
+
+
+  docker-publish:
+    needs: build
+    permissions:
+      contents: read
+      packages: write
+    runs-on: 
+    - kubernetes #Runner on-premise
+    #- ubuntu-latest #Runner cloud (default)
+    steps:
+      - uses: actions/checkout@v4
+          
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: service-build
+          path: target
+
+      - name: Publish to Docker Hub
+        uses: codeparce/ci-workflows/.github/actions/registry@v1
+        with:
+          container-access-token: ${{ secrets.CONTAINER_REGISTRY_PAT_GITHUB }}
+
+  deploy:
+    runs-on: kubernetes #Runner on-premise
+    needs: docker-publish
+    env:
+      GITHUB_REPOSITORY_NAME: ${{ github.event.repository.name }}
+      GITHUB_ORG: ${{ github.repository_owner }}
+      SVC_NAME: ${{ github.event.repository.name }}-svc
+      NS: sis-${{ github.ref_name  }}-ms
+      MS_PATH: transactions
+      MONITORING_PATH: /transactions/metrics
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Actions for on-premise deploy
+        uses: codeparce/ci-workflows/.github/actions/on-premise@v1
+        with:
+          container-access-token: ${{ secrets.CONTAINER_REGISTRY_PAT_GITHUB }}
+          type: ms
+
+      - name: Show deployment information
+        run: |
+          echo "Deployment completed successfully."
+          echo "DNS Externo: http://microservicio.${NS}.lab/${MS_PATH}"
+          echo "DNS interno: ${SVC_NAME}.${NS}.svc.cluster.local/${MS_PATH}"

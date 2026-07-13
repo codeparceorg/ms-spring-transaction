@@ -1,5 +1,8 @@
 package com.ms_spring_transferencias.lab.service;
 
+import java.util.List;
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import com.ms_spring_transferencias.lab.dto.CreateTransactionRequest;
@@ -24,7 +27,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         Transaction transaction = new Transaction();
 
-        transaction.setAccountId(request.getAccountNumber());
+        transaction.setAccountNumber(request.getAccountNumber());
         transaction.setDestinationAccount(request.getDestinationAccount());
         transaction.setTransactionType(request.getTransactionType());
         transaction.setStatus(TransactionStatusType.pending);
@@ -34,4 +37,20 @@ public class TransactionServiceImpl implements TransactionService {
         return repository.save(transaction);
     }
 
+    @Override
+    public Transaction get(UUID id, String AccountNumber) {
+        Transaction transaction = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+
+        if (transaction.getAccountNumber() == null || !transaction.getAccountNumber().equals(AccountNumber)) {
+            throw new IllegalArgumentException("Transaction not found for account");
+        }
+
+        return transaction;
+    }
+
+    @Override
+    public List<Transaction> getAll(String AccountNumber,String destinationAccount) {
+        return repository.findAllByAccountNumberOrDestinationAccount(AccountNumber, destinationAccount);
+    }
 }
