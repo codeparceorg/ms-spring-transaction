@@ -1,19 +1,20 @@
 server:
   port: 80
+  commit: ${IMAGE_TAG}
 
 spring:
   application:
     name: ms-spring-transaction
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/mi_banca
+    url: jdbc:postgresql://mi_banca_dev_2026:5432/mi_banca
     username: admin
     password: admin_2026
     driver-class-name: org.postgresql.Driver
 
   kafka:
     consumer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: kafka_server:29092
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       

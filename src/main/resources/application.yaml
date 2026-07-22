@@ -1,18 +1,21 @@
 server:
   port: 8081
+  commit: "d5as8daw485"
 
 spring:
   application:
-    name: lab
+    name: ms-spring-transaccion
 
   datasource:
-    url: jdbc:postgresql://mi_banca_dev_2026:5432/mi_banca
+    #url: jdbc:postgresql://mi_banca_dev_2026:5432/mi_banca
+    url: jdbc:postgresql://localhost:5432/mi_banca
     username: admin
     password: admin_2026
     driver-class-name: org.postgresql.Driver
 
   kafka:
-    bootstrap-servers: kafka_server:29092 
+    #bootstrap-servers: kafka_server:29092 
+    bootstrap-servers: localhost:9092 
     consumer:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
