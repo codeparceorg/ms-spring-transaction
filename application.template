@@ -1,6 +1,6 @@
 server:
   port: 80
-  commit: ${IMAGE_TAG}
+  commit: "${IMAGE_TAG}"
 
 spring:
   application:
