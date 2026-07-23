@@ -40,7 +40,8 @@ public class TransactionController {
 
         response.put("Version: ", Version);
         response.put("App: ", "ms-spring-transaction");
-        response.put("new: ", "version");
+        response.put("new: ", "ms-spring");
+        response.put("test: ", "ms-test");
         response.put("Message: ", "Welcom ! :D");
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
