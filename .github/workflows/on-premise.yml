@@ -68,7 +68,7 @@ jobs:
 
 
   api-smoke-tests:
-    needs: build
+    needs: deploy
     name: Smoke tests using Postman CLI
     runs-on: kubernetes
     steps:
