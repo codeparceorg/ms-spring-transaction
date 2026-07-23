@@ -65,3 +65,19 @@ jobs:
           echo "Deployment completed successfully."
           echo "DNS Externo: http://microservicio.${NS}.lab/${MS_PATH}"
           echo "DNS interno: ${SVC_NAME}.${NS}.svc.cluster.local/${MS_PATH}"
+
+
+  api-smoke-tests:
+    needs: build
+    name: Smoke tests using Postman CLI
+    runs-on: kubernetes
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Postman CLI
+        run: |
+          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+      - name: Login to Postman CLI
+        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+      - name: Run API tests
+        run: |
+          postman collection run "26205436-7437373b-b68d-470d-918d-a1af8f0cf261" -e "26205436-2a8a4325-1067-43a4-98ec-6fdf5ec19bf1"
